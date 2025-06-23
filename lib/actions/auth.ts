@@ -8,6 +8,8 @@ import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { workflowClient } from "../workflow";
+import config from "../config";
 
 interface AuthCredentials {
   fullName: string;
@@ -79,7 +81,15 @@ export const signUp = async (params: AuthCredentials) => {
       universityCard,
     });
 
-    // await signIn({ email, password });
+    await workflowClient.trigger({
+      url: `${config.env.prodApiEndpoint}/api/workflow/onboarding`,
+      body: {
+        email,
+        fullName,
+      },
+    });
+
+    await signInWithCredentials({ email, password });
 
     return { success: true };
   } catch (error) {
