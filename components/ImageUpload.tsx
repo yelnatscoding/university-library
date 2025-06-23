@@ -4,7 +4,7 @@ import { IKImage, ImageKitProvider, IKUpload, IKVideo } from "imagekitio-next";
 import config from "@/lib/config";
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { toast } from "@/app/hooks/use-toast";
+// import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
 const {
@@ -45,7 +45,7 @@ interface Props {
   value?: string;
 }
 
-const ImageUpload = ({
+const FileUpload = ({
   type,
   accept,
   placeholder,
@@ -72,41 +72,41 @@ const ImageUpload = ({
   const onError = (error: any) => {
     console.log(error);
 
-    toast({
-      title: `${type} upload failed`,
-      description: `Your ${type} could not be uploaded. Please try again.`,
-      variant: "destructive",
-    });
+    // toast({
+    //   title: `${type} upload failed`,
+    //   description: `Your ${type} could not be uploaded. Please try again.`,
+    //   variant: "destructive",
+    // });
   };
 
   const onSuccess = (res: any) => {
     setFile(res);
     onFileChange(res.filePath);
 
-    toast({
-      title: `${type} uploaded successfully`,
-      description: `${res.filePath} uploaded successfully!`,
-    });
+    // toast({
+    //   title: `${type} uploaded successfully`,
+    //   description: `${res.filePath} uploaded successfully!`,
+    // });
   };
 
   const onValidate = (file: File) => {
     if (type === "image") {
       if (file.size > 20 * 1024 * 1024) {
-        toast({
-          title: "File size too large",
-          description: "Please upload a file that is less than 20MB in size",
-          variant: "destructive",
-        });
+        // toast({
+        //   title: "File size too large",
+        //   description: "Please upload a file that is less than 20MB in size",
+        //   variant: "destructive",
+        // });
 
         return false;
       }
     } else if (type === "video") {
       if (file.size > 50 * 1024 * 1024) {
-        toast({
-          title: "File size too large",
-          description: "Please upload a file that is less than 50MB in size",
-          variant: "destructive",
-        });
+        // toast({
+        //   title: "File size too large",
+        //   description: "Please upload a file that is less than 50MB in size",
+        //   variant: "destructive",
+        // });
         return false;
       }
     }
@@ -174,14 +174,14 @@ const ImageUpload = ({
       {file &&
         (type === "image" ? (
           <IKImage
-            alt={file.filePath ? file.filePath : ""}
-            path={file.filePath ? file.filePath : ""}
+            alt={file.filePath}
+            path={file.filePath}
             width={500}
             height={300}
           />
         ) : type === "video" ? (
           <IKVideo
-            path={file.filePath ? file.filePath : ""}
+            path={file.filePath}
             controls={true}
             className="h-96 w-full rounded-xl"
           />
@@ -190,4 +190,4 @@ const ImageUpload = ({
   );
 };
 
-export default ImageUpload;
+export default FileUpload;
